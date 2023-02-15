@@ -1,0 +1,9 @@
+{
+	"editor.detectIndentation": true,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"editor.useTabStops": true,
+	"files.exclude": {
+		"build/": true
+	},
+}

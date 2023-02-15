@@ -1,0 +1,22 @@
+name: build
+
+on: push
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Configure
+        run: |
+          mkdir build
+          cmake -B build
+      - name: Build
+        run: cmake --build build
+      - name: Install
+        run: sudo cmake --build build --target install
