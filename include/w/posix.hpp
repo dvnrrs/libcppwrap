@@ -140,6 +140,17 @@ namespace w
 	}
 
 	/**
+	 * Sets the position of a file pointer for a file descriptor.
+	 *
+	 * @param fd The file descriptor to seek in.
+	 * @param offset The offset to seek to.
+	 * @param whence `SEEK_SET`, `SEEK_CUR` or `SEEK_END`.
+	 * @return The new offset relative to the beginning of the file.
+	 * @throw std::system_error An error occurred.
+	 */
+	std::size_t lseek(int fd, off_t offset, int whence);
+
+	/**
 	 * Opens and possibly creates a file.
 	 *
 	 * @param pathname The path of the file to open and/or create.

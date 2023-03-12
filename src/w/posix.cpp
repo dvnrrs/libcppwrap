@@ -53,6 +53,15 @@ int w::ioctl(int fd, unsigned long request, const void *arg)
 		"ioctl failed");
 }
 
+std::size_t w::lseek(int fd, off_t offset, int whence)
+{
+	return static_cast<std::size_t>(
+		w::throw_if_lt(
+			::lseek(fd, offset, whence),
+			static_cast<off_t>(0),
+			"lseek failed"));
+}
+
 w::fd w::open(const char *pathname, int flags)
 {
 	return w::throw_if_eq(
