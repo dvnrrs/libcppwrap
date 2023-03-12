@@ -86,3 +86,12 @@ std::size_t w::read(int fd, void *buf, std::size_t count)
 			ssize_t { 0 },
 			"read error"));
 }
+
+std::size_t w::write(int fd, const void *buf, std::size_t count)
+{
+	return static_cast<std::size_t>(
+		w::throw_if_lt(
+			::write(fd, buf, count),
+			ssize_t { 0 },
+			"write error"));
+}
