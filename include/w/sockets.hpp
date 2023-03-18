@@ -340,7 +340,7 @@ namespace w
 	 * @return The number of bytes successfully received (which may be zero).
 	 * @throw std::system_error An error occurred. This includes `EAGAIN` on non-blocking sockets.
 	 */
-	std::size_t recv(int sockfd, void *buf, std::size_t len, int flags);
+	std::size_t recv(int sockfd, void *buf, std::size_t len, int flags = 0);
 
 	/**
 	 * Receives a message from a socket.
@@ -351,7 +351,7 @@ namespace w
 	 * @return The number of bytes successfully received (which may be zero).
 	 * @throw std::system_error An error occurred. This includes `EAGAIN` on non-blocking sockets.
 	 */
-	std::size_t recvmsg(int sockfd, struct msghdr *msg, int flags);
+	std::size_t recvmsg(int sockfd, struct msghdr *msg, int flags = 0);
 
 	/**
 	 * Receives a message from a socket.
@@ -410,7 +410,7 @@ namespace w
 	 * @return The number of bytes successfully accepted for transmission (which may be zero).
 	 * @throw std::system_error An error occurred. This includes `EAGAIN` on non-blocking sockets.
 	 */
-	std::size_t send(int sockfd, const void *buf, std::size_t len, int flags);
+	std::size_t send(int sockfd, const void *buf, std::size_t len, int flags = 0);
 
 	/**
 	 * Sends a message on a socket.
@@ -421,7 +421,7 @@ namespace w
 	 * @return The number of bytes successfully accepted for transmission (which may be zero).
 	 * @throw std::system_error An error occurred. This includes `EAGAIN` on non-blocking sockets.
 	 */
-	std::size_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
+	std::size_t sendmsg(int sockfd, const struct msghdr *msg, int flags = 0);
 
 	/**
 	 * Sends a message on a socket.
