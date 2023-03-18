@@ -152,7 +152,7 @@ namespace w
 	 *        hold the remote address.
 	 */
 	template <typename Address>
-	w::fd accept(int sockfd, const Address& addr)
+	w::fd accept(int sockfd, Address& addr)
 	{
 		socklen_t addrlen = sizeof(addr);
 		w::fd fd = w::accept(sockfd, reinterpret_cast<struct sockaddr *>(&addr), &addrlen);
