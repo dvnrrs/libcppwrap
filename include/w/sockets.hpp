@@ -15,6 +15,7 @@
 #include <netinet/ip6.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/un.h>
 
 #include <w/handle.hpp>
 #include <w/iterators.hpp>
@@ -126,6 +127,20 @@ namespace w
 		 *        @p interface_name.
 		 */
 		ipv6_address(const in6_addr& address, std::uint16_t port, const char *interface_name);
+	};
+
+	/**
+	 * Wraps `struct sockaddr_in`, adding constructors for convenient initialization.
+	 */
+	struct unix_domain_address : sockaddr_un
+	{
+		/**
+		 * Initializes a UNIX domain address.
+		 *
+		 * @param path The UNIX domain socket path.
+		 * @throw std::invalid_argument The @p path is too long.
+		 */
+		unix_domain_address(const char *path);
 	};
 
 	/**

@@ -5,6 +5,7 @@
 //
 
 #include <cstring>
+#include <stdexcept>
 #include <string>
 
 #include <ifaddrs.h>
@@ -90,6 +91,15 @@ w::ipv6_address::ipv6_address(const in6_addr& address, std::uint16_t port, unsig
 	sin6_flowinfo = { };
 	sin6_addr = address;
 	sin6_scope_id = interface_index;
+}
+
+w::unix_domain_address::unix_domain_address(const char *path)
+{
+	sun_family = AF_UNIX;
+
+	std::strncpy(sun_path, path, sizeof(sun_path));
+	if (sun_path[sizeof(sun_path) - 1] != '\0')
+		throw std::invalid_argument("UNIX domain socket path is too long");
 }
 
 w::fd w::accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
