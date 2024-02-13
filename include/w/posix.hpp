@@ -11,6 +11,7 @@
 #include <w/handle.hpp>
 
 #include <unistd.h>
+#include <sys/mman.h>
 
 namespace w
 {
@@ -18,6 +19,48 @@ namespace w
 	 * An RAII util::handle type for POSIX file descriptors.
 	 */
 	typedef w::handle<int, -1, ::close> fd;
+
+	/**
+	 * A structure holding details about a memory-mapped file or device. Such a structure is the
+	 * resource type of a w::mmap_handle RAII handle.
+	 */
+	struct memory_region
+	{
+		void *address;			/**< The (actual, not requested) base address of the mapping. */
+		std::size_t length;		/**< The length of the mapping in bytes. */
+
+		/**
+		 * Constructs a memory region.
+		 * @param address The (actual, not requested) base address of the mapping.
+		 * @param The length of the mapping in bytes.
+		 */
+		constexpr memory_region(void *address, std::size_t length) noexcept : address(address), length(length) { }
+
+		/**
+		 * Constructs an empty memory region.
+		 */
+		constexpr memory_region() noexcept : memory_region(nullptr, 0) { }
+
+		/**
+		 * Compares two memory regions.
+		 * @param rhs A reference to the memory region to compare.
+		 * @return `false` if this object and @p rhs both have the same address and length.
+		 */
+		constexpr bool operator!=(const memory_region& rhs) const noexcept { return rhs.address != address || rhs.length != length; }
+	};
+
+	namespace detail
+	{
+		inline void munmap(const memory_region& region)
+		{
+			::munmap(region.address, region.length);
+		}
+	}
+
+	/**
+	 * An RAII util::handle type for mmap() entries.
+	 */
+	typedef w::handle<memory_region, memory_region { }, detail::munmap> mmap_handle;
 
 	/**
 	 * Controls a file descriptor.
@@ -149,6 +192,20 @@ namespace w
 	 * @throw std::system_error An error occurred.
 	 */
 	std::size_t lseek(int fd, off_t offset, int whence);
+
+	/**
+	 * Maps a file or device into memory.
+	 *
+	 * @param address The requested virtual address to map the file or device into.
+	 * @param length The number of bytes to map.
+	 * @param prot The protection flags for the mapping.
+	 * @param flags Additional flags.
+	 * @param fd The file descriptor of the file or device to map.
+	 * @param offset The offset in bytes of the file or device to map.
+	 * @return An RAII handle for the mapping.
+	 * @throw std::system_error An error occurred.
+	 */
+	w::mmap_handle mmap(void *address, std::size_t length, int prot, int flags, int fd, off_t offset);
 
 	/**
 	 * Opens and possibly creates a file.
