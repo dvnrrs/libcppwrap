@@ -12,6 +12,8 @@
 
 #include <w/posix.hpp>
 
+#include <sys/epoll.h>
+
 namespace w
 {
 	/**
@@ -89,6 +91,7 @@ namespace w
 	 * @param events A pointer to an array of structures to receive information about events.
 	 * @param maxevents The number of elements in the @p events array.
 	 * @param timeout The number of milliseconds
+	 * @return The number of events that occurred, which may be zero.
 	 * @throw std::invalid_argument @p timeout is out of range.
 	 * @throw std::system_error An error occurred.
 	 */

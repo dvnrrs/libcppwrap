@@ -7,6 +7,7 @@
 #pragma once
 
 #include <cstddef>
+#include <utility>
 
 #include <w/handle.hpp>
 
@@ -227,6 +228,14 @@ namespace w
 	 * @throw std:system_error An error occurred.
 	 */
 	w::fd open(const char *pathname, int flags, mode_t mode);
+
+	/**
+	 * Creates a pipe.
+	 *
+	 * @return A pair of file descriptors for the read and write ends of the pipe, respectively.
+	 * @throw std:system_error An error occurred.
+	 */
+	std::pair<w::fd, w::fd> pipe();
 
 	/**
 	 * Reads data from a file descriptor.

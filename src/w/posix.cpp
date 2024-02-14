@@ -5,6 +5,7 @@
 //
 
 #include <cstddef>
+#include <utility>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -83,6 +84,18 @@ w::fd w::open(const char *pathname, int flags, mode_t mode)
 		::open(pathname, flags, mode),
 		-1,
 		"failed to open file");
+}
+
+std::pair<w::fd, w::fd> w::pipe()
+{
+	int fds[2];
+
+	w::throw_if_ne(
+		::pipe(fds),
+		0,
+		"failed to create pipe");
+
+	return std::make_pair(fds[0], fds[1]);
 }
 
 std::size_t w::read(int fd, void *buf, std::size_t count)
