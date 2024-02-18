@@ -35,33 +35,25 @@ void w::epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)
 
 void w::epoll_ctl(int epfd, int op, int fd, std::uint32_t events, void *user_data)
 {
-	struct epoll_event ev;
-	ev.events = events;
-	ev.data.ptr = user_data;
+	struct epoll_event ev { .events = events, .data { .ptr = user_data } };
 	w::epoll_ctl(epfd, op, fd, &ev);
 }
 
 void w::epoll_ctl(int epfd, int op, int fd, std::uint32_t events, int user_data)
 {
-	struct epoll_event ev;
-	ev.events = events;
-	ev.data.fd = user_data;
+	struct epoll_event ev { .events = events, .data { .fd = user_data } };
 	w::epoll_ctl(epfd, op, fd, &ev);
 }
 
 void w::epoll_ctl(int epfd, int op, int fd, std::uint32_t events, std::uint32_t user_data)
 {
-	struct epoll_event ev;
-	ev.events = events;
-	ev.data.u32 = user_data;
+	struct epoll_event ev { .events = events, .data { .u32 = user_data } };
 	w::epoll_ctl(epfd, op, fd, &ev);
 }
 
 void w::epoll_ctl(int epfd, int op, int fd, std::uint32_t events, std::uint64_t user_data)
 {
-	struct epoll_event ev;
-	ev.events = events;
-	ev.data.u64 = user_data;
+	struct epoll_event ev { .events = events, .data { .u64 = user_data } };
 	w::epoll_ctl(epfd, op, fd, &ev);
 }
 
