@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <sys/uio.h>
 
 #include <w/assert.hpp>
 #include <w/posix.hpp>
@@ -107,11 +108,29 @@ std::size_t w::read(int fd, void *buf, std::size_t count)
 			"read error"));
 }
 
+std::size_t w::readv(int fd, const struct iovec *iov, int iovcnt)
+{
+	return static_cast<std::size_t>(
+		w::throw_if_lt(
+			::readv(fd, iov, iovcnt),
+			ssize_t { 0 },
+			"read error"));
+}
+
 std::size_t w::write(int fd, const void *buf, std::size_t count)
 {
 	return static_cast<std::size_t>(
 		w::throw_if_lt(
 			::write(fd, buf, count),
+			ssize_t { 0 },
+			"write error"));
+}
+
+std::size_t w::writev(int fd, const struct iovec *iov, int iovcnt)
+{
+	return static_cast<std::size_t>(
+		w::throw_if_lt(
+			::writev(fd, iov, iovcnt),
 			ssize_t { 0 },
 			"write error"));
 }

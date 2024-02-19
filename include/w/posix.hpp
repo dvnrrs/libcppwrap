@@ -249,6 +249,17 @@ namespace w
 	std::size_t read(int fd, void *buf, std::size_t count);
 
 	/**
+	 * Reads data from a file descriptor.
+	 *
+	 * @param fd The file descriptor to read from.
+	 * @param iov A pointer to an array of `iovec` scatter-gather structures.
+	 * @param iovcnt The number of structures in the array pointed to by @p iov.
+	 * @return The number of bytes actually read, which may be zero.
+	 * @throw std::system_error An error occurred. This includes `EAGAIN` on non-blocking files.
+	 */
+	std::size_t readv(int fd, const struct iovec *iov, int iovcnt);
+
+	/**
 	 * Writes data to a file descriptor.
 	 *
 	 * @param fd The file descriptor to write to.
@@ -258,4 +269,15 @@ namespace w
 	 * @throw std::system_error An error occurred. This includes `EAGAIN` on non-blocking files.
 	 */
 	std::size_t write(int fd, const void *buf, std::size_t count);
+
+	/**
+	 * Writes data to a file descriptor.
+	 *
+	 * @param fd The file descriptor to write to.
+	 * @param iov A pointer to an array of `iovec` scatter-gather structures.
+	 * @param iovcnt The number of structures in the array pointed to by @p iov.
+	 * @return The number of bytes actually written, which may be zero.
+	 * @throw std::system_error An error occurred. This includes `EAGAIN` on non-blocking files.
+	 */
+	std::size_t writev(int fd, const struct iovec *iov, int iovcnt);
 }
