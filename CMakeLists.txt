@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(
 	cppwrap
-	VERSION		1.3.7
+	VERSION		1.3.8
 	DESCRIPTION	"A collection of C++ wrappers for native APIs")
 
 option(ENABLE_LINUX		"Build wrappers for non-POSIX Linux functions"	ON)

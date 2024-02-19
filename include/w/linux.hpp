@@ -99,6 +99,34 @@ namespace w
 		std::chrono::milliseconds timeout = std::chrono::milliseconds(-1));
 
 	/**
+	 * Creates an event file descriptor.
+	 *
+	 * @param initval The initial value of the eventfd counter.
+	 * @param flags Flags that affect the created event file descriptor.
+	 */
+	w::fd eventfd(unsigned initval = 0, int flags = 0);
+
+	/**
+	 * Reads the current counter value of an event file descriptor; see the man page of
+	 * `eventfd()` for a description of the counter and blocking semantics.
+	 *
+	 * @param evfd The event file descriptor.
+	 * @return The event counter value.
+	 * @throws std::system_error An error occurred.
+	 */
+	std::uint64_t eventfd_read(int evfd);
+
+	/**
+	 * Modifies the counter value of an event file descriptor; see the man page of `eventfd()` for
+	 * a description of the counter semantics.
+	 *
+	 * @param evfd The event file descriptor.
+	 * @param value The event counter value.
+	 * @throws std::system_error An error occurred.
+	 */
+	void eventfd_write(int evfd, std::uint64_t value);
+
+	/**
 	 * Creates a timer file descriptor.
 	 *
 	 * @param clockid The identifier of the clock on which the timer should be based.

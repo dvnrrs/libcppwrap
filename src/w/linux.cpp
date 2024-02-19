@@ -11,6 +11,7 @@
 #include <stdexcept>
 
 #include <sys/epoll.h>
+#include <sys/eventfd.h>
 #include <sys/timerfd.h>
 
 #include <w/assert.hpp>
@@ -68,6 +69,26 @@ unsigned w::epoll_wait(int epfd, struct epoll_event *events, int maxevents,
 		::epoll_wait(epfd, events, maxevents, timeout.count()),
 		0,
 		"failed to wait on epoll instance");
+}
+
+w::fd w::eventfd(unsigned initval, int flags)
+{
+	return w::throw_if_eq(
+		::eventfd(initval, flags),
+		-1,
+		"failed to create event file descriptor");
+}
+
+std::uint64_t w::eventfd_read(int evfd)
+{
+	std::uint64_t result;
+	w::read(evfd, &result, sizeof(result));
+	return result;
+}
+
+void w::eventfd_write(int evfd, std::uint64_t value)
+{
+	w::write(evfd, &value, sizeof(value));
 }
 
 w::fd w::timerfd_create(int clockid, int flags)
