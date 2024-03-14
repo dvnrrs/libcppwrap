@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(
 	cppwrap
-	VERSION		1.3.8
+	VERSION		1.3.9
 	DESCRIPTION	"A collection of C++ wrappers for native APIs")
 
 option(ENABLE_LINUX		"Build wrappers for non-POSIX Linux functions"	ON)
@@ -11,14 +11,27 @@ option(ENABLE_SOCKETS	"Build wrappers for BSD sockets functions"		ON)
 option(ENABLE_WX_IPV6	"Build the IPv6 extensions (requires sockets)"	ON)
 option(ENABLE_WX_SLURP	"Build the slurp and spew extensions"			ON)
 
-set(SOURCES
-	$<$<STREQUAL:$<UPPER_CASE:${ENABLE_LINUX}>,ON>:src/w/linux.cpp>
-	$<$<STREQUAL:$<UPPER_CASE:${ENABLE_POSIX}>,ON>:src/w/posix.cpp>
-	$<$<STREQUAL:$<UPPER_CASE:${ENABLE_SOCKETS}>,ON>:src/w/sockets.cpp>
-	$<$<STREQUAL:$<UPPER_CASE:${ENABLE_WX_IPV6}>,ON>:src/wx/ipv6.cpp>
-	$<$<STREQUAL:$<UPPER_CASE:${ENABLE_WX_SLURP}>,ON>:src/wx/slurp.cpp>
-)
+if(ENABLE_LINUX)
+	list(APPEND SOURCES "w/linux.cpp")
+endif()
 
+if(ENABLE_POSIX)
+	list(APPEND SOURCES "w/posix.cpp")
+endif()
+
+if(ENABLE_SOCKETS)
+	list(APPEND SOURCES "w/sockets.cpp")
+endif()
+
+if(ENABLE_WX_IPV6)
+	list(APPEND SOURCES "wx/ipv6.cpp")
+endif()
+
+if(ENABLE_WX_SLURP)
+	list(APPEND SOURCES "wx/slurp.cpp")
+endif()
+
+list(TRANSFORM SOURCES PREPEND src/)
 add_library(${PROJECT_NAME} ${SOURCES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

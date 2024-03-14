@@ -13,6 +13,7 @@
 
 #include <unistd.h>
 #include <sys/mman.h>
+#include <sys/uio.h>
 
 namespace w
 {
