@@ -59,10 +59,12 @@ namespace w
 		}
 	}
 
+#if (__cplusplus >= 202002L)
 	/**
 	 * An RAII util::handle type for mmap() entries.
 	 */
 	typedef w::handle<memory_region, memory_region { }, detail::munmap> mmap_handle;
+#endif
 
 	/**
 	 * Controls a file descriptor.
@@ -195,6 +197,7 @@ namespace w
 	 */
 	std::size_t lseek(int fd, off_t offset, int whence);
 
+#if (__cplusplus >= 202002L)
 	/**
 	 * Maps a file or device into memory.
 	 *
@@ -208,6 +211,7 @@ namespace w
 	 * @throw std::system_error An error occurred.
 	 */
 	w::mmap_handle mmap(void *address, std::size_t length, int prot, int flags, int fd, off_t offset);
+#endif
 
 	/**
 	 * Opens and possibly creates a file.

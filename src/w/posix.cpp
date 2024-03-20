@@ -64,12 +64,14 @@ std::size_t w::lseek(int fd, off_t offset, int whence)
 			"lseek failed"));
 }
 
+#if (__cplusplus >= 202002L)
 w::mmap_handle w::mmap(void *address, std::size_t length, int prot, int flags, int fd, off_t offset)
 {
 	void *actual_address = ::mmap(address, length, prot, flags, fd, offset);
 	w::throw_if_eq<void *>(actual_address, nullptr, "failed to map file or device into memory");
 	return w::memory_region { actual_address, length };
 }
+#endif
 
 w::fd w::open(const char *pathname, int flags)
 {
