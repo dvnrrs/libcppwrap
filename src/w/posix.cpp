@@ -64,7 +64,7 @@ std::size_t w::lseek(int fd, off_t offset, int whence)
 			"lseek failed"));
 }
 
-#if (__cplusplus >= 202002L)
+#if (__cplusplus >= 201709L)
 w::mmap_handle w::mmap(void *address, std::size_t length, int prot, int flags, int fd, off_t offset)
 {
 	void *actual_address = ::mmap(address, length, prot, flags, fd, offset);

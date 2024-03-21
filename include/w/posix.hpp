@@ -59,7 +59,7 @@ namespace w
 		}
 	}
 
-#if (__cplusplus >= 202002L)
+#if (__cplusplus >= 201709L)
 	/**
 	 * An RAII util::handle type for mmap() entries.
 	 */
@@ -197,7 +197,7 @@ namespace w
 	 */
 	std::size_t lseek(int fd, off_t offset, int whence);
 
-#if (__cplusplus >= 202002L)
+#if (__cplusplus >= 201709L)
 	/**
 	 * Maps a file or device into memory.
 	 *
