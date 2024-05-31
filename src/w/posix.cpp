@@ -65,6 +65,7 @@ std::size_t w::lseek(int fd, off_t offset, int whence)
 }
 
 #if (__cplusplus >= 201709L)
+__attribute__((visibility("default"))) 
 w::mmap_handle w::mmap(void *address, std::size_t length, int prot, int flags, int fd, off_t offset)
 {
 	void *actual_address = ::mmap(address, length, prot, flags, fd, offset);
