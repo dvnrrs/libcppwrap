@@ -23,22 +23,6 @@ int w::fcntl(int fd, int cmd)
 		"file descriptor control failed");
 }
 
-int w::fcntl(int fd, int cmd, void *arg)
-{
-	return w::throw_if_eq(
-		::fcntl(fd, cmd, arg),
-		-1,
-		"file descriptor control failed");
-}
-
-int w::fcntl(int fd, int cmd, const void *arg)
-{
-	return w::throw_if_eq(
-		::fcntl(fd, cmd, arg),
-		-1,
-		"file descriptor control failed");
-}
-
 int w::ioctl(int fd, unsigned long request, void *arg)
 {
 	return w::throw_if_lt(

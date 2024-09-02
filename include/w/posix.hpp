@@ -9,8 +9,10 @@
 #include <cstddef>
 #include <utility>
 
+#include <w/assert.hpp>
 #include <w/handle.hpp>
 
+#include <fcntl.h>
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/uio.h>
@@ -79,28 +81,6 @@ namespace w
 	/**
 	 * Controls a file descriptor.
 	 *
-	 * @param fd The file descriptor to control.
-	 * @param cmd The control command code.
-	 * @param arg A pointer to a command-specific input argument.
-	 * @return A result code from the command.
-	 * @throw std:system_error An error occurred.
-	 */
-	int fcntl(int fd, int cmd, void *arg);
-
-	/**
-	 * Controls a file descriptor.
-	 *
-	 * @param fd The file descriptor to control.
-	 * @param cmd The control command code.
-	 * @param arg A pointer to a command-specific output argument.
-	 * @return A result code from the command.
-	 * @throw std:system_error An error occurred.
-	 */
-	int fcntl(int fd, int cmd, const void *arg);
-
-	/**
-	 * Controls a file descriptor.
-	 *
 	 * @tparam Argument The type of the command-specific argument.
 	 * @param fd The file descriptor to control.
 	 * @param cmd The control command code.
@@ -111,24 +91,10 @@ namespace w
 	template <typename Argument>
 	int fcntl(int fd, int cmd, const Argument& arg)
 	{
-		return w::fcntl(fd, cmd, &arg);
-	}
-
-	/**
-	 * Controls a file descriptor.
-	 *
-	 * @tparam Argument The type of the command-specific argument.
-	 * @param fd The file descriptor to control.
-	 * @param cmd The control command code.
-	 * @return An @p Argument filled in by the command.
-	 * @throw std:system_error An error occurred.
-	 */
-	template <typename Argument>
-	Argument fcntl(int fd, int cmd)
-	{
-		Argument arg;
-		w::fcntl(fd, cmd, &arg);
-		return arg;
+		return w::throw_if_eq(
+			::fcntl(fd, cmd, arg),
+			-1,
+			"file descriptor control failed");
 	}
 
 	/**
