@@ -109,7 +109,10 @@ namespace w
 	int ioctl(int fd, unsigned long request, void *arg);
 
 	/**
-	 * Controls a device.
+	 * Controls a device. Note that the library cannot guarantee the underlying ioctl call will
+	 * not modify its argument. Therefore, when using this overload, it is the caller's
+	 * responsibility to somehow ensure the ioctl does not modify its argument, or the behavior is
+	 * undefined.
 	 *
 	 * @param fd The file descriptor of the device to control.
 	 * @param request The control request code.
@@ -130,9 +133,28 @@ namespace w
 	 * @throw std:system_error An error occurred.
 	 */
 	template <typename Argument>
-	int ioctl(int fd, unsigned request, const Argument& arg)
+	int ioctl(int fd, unsigned long request, Argument& arg)
 	{
-		return w::ioctl(fd, request, &arg);
+		return w::ioctl(fd, request, reinterpret_cast<void *>(&arg));
+	}
+
+	/**
+	 * Controls a device. Note that the library cannot guarantee the underlying ioctl call will
+	 * not modify its argument. Therefore, when using this overload, it is the caller's
+	 * responsibility to somehow ensure the ioctl does not modify its argument, or the behavior is
+	 * undefined.
+	 *
+	 * @tparam Argument The type of @p arg.
+	 * @param fd The file descriptor of the device to control.
+	 * @param request The control request code.
+	 * @param arg A pointer to a request-specific input argument.
+	 * @return A nonnegative result code from the control request.
+	 * @throw std:system_error An error occurred.
+	 */
+	template <typename Argument>
+	int ioctl(int fd, unsigned long request, const Argument& arg)
+	{
+		return w::ioctl(fd, request, reinterpret_cast<const void *>(&arg));
 	}
 
 	/**
@@ -145,10 +167,10 @@ namespace w
 	 * @throw std:system_error An error occurred.
 	 */
 	template <typename Argument>
-	Argument ioctl(int fd, unsigned request)
+	Argument ioctl(int fd, unsigned long request)
 	{
 		Argument arg;
-		w::ioctl(fd, request, &arg);
+		w::ioctl(fd, request, reinterpret_cast<void *>(&arg));
 		return arg;
 	}
 
